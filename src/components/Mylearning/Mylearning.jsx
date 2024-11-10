@@ -1,5 +1,5 @@
 import "./mylearning.css";
-import CourseCard from "../utils/Cards/mylearningcard/card";
+import CourseCard from "../utils/Cards/mylearningcard/Card";
 import { useState, useEffect } from "react";
 import axios from "axios"; // Add this import
 
