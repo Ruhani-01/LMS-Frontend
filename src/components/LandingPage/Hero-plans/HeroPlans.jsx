@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./HeroPlans.css";
+import "./Heroplans.css";
 import personstanding from "../../../assets/two-person-standing.png";
 import teaching from "../../../assets/teaching.png.png";
 import rabbitEar from "../../../assets/rabbit-ear.png";
