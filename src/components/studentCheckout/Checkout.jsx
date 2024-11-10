@@ -1,5 +1,5 @@
 import  { useState ,useEffect} from "react";
-import "./checkout.css";
+import "./Checkout.css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import logo from "../../assets/logo-learnlynx.png";
