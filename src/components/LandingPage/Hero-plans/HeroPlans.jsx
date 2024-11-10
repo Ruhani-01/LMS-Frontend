@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 export default function HeroPlans() {
   const [isInView, setIsInView] = useState(false);
   const navigate = useNavigate();
-  useEffect(() => {k
+  useEffect(() => {
     const handleScroll = () => {
       const rabbitSection = document.querySelector(".page5-div2");
       const sectionTop = rabbitSection.getBoundingClientRect().top;
