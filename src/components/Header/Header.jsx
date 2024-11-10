@@ -1,6 +1,6 @@
 import "./Header.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import Logo from "../../assets/Logo.png";
+import Logo from "../../assets/logo.png";
 import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import axios from "axios";
