@@ -14,7 +14,7 @@ export default function ViewCourse() {
 
   const checkOutHandler = async (ammount) => {
     try {
-      const verify = await axios.get("http://localhost:3000/api/verifyUser", {
+      const verify = await axios.get("https://learnlynxbackend.onrender.com/api/verifyUser", {
         withCredentials: true,
       });
 
@@ -28,13 +28,13 @@ export default function ViewCourse() {
 
       const {
         data: { order },
-      } = await axios.post("http://localhost:3000/api/checkout", {
+      } = await axios.post("https://learnlynxbackend.onrender.com/api/checkout", {
         ammount,
       });
 
       const {
         data: { key },
-      } = await axios.get("http://localhost:3000/api/getkey");
+      } = await axios.get("https://learnlynxbackend.onrender.com/api/getkey");
 
       const options = {
         key,
@@ -47,7 +47,7 @@ export default function ViewCourse() {
         handler: async function (response) {
           try {
             const savePaymentData = await axios.post(
-              `http://localhost:3000/api/paymentverification/${id}?auth=${verify.data.user._id}`,
+              `https://learnlynxbackend.onrender.com/api/paymentverification/${id}?auth=${verify.data.user._id}`,
               response,
               {
                 withCredentials: true,
@@ -86,7 +86,7 @@ export default function ViewCourse() {
   };
 
   useEffect(() => {
-    fetch(`/api/admin/course/${id}`)
+    fetch(`https://learnlynxbackend.onrender.com/api/admin/course/${id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch course details");

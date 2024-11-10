@@ -40,7 +40,7 @@ export default function Login() {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/api/signup", {
+      const response = await axios.post("https://learnlynxbackend.onrender.com/api/signup", {
         username: signUpData.username,
         email: signUpData.email,
         password: signUpData.password,
@@ -69,7 +69,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/login",
+        "https://learnlynxbackend.onrender.com/api/login",
         {
           email: loginData.email,
           password: loginData.password,

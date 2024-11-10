@@ -12,7 +12,7 @@ const App = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const coursesResponse = await fetch("/api/admin/courses");
+        const coursesResponse = await fetch("https://learnlynxbackend.onrender.com/api/admin/courses");
         if (!coursesResponse.ok) {
           throw new Error("Failed to fetch courses");
         }
@@ -21,7 +21,7 @@ const App = () => {
 
         // Fetch the logged-in user's ID
         const verifyResponse = await axios.get(
-          "http://localhost:3000/api/verifyUser",
+          "https://learnlynxbackend.onrender.com/api/verifyUser",
           {
             withCredentials: true,
           }

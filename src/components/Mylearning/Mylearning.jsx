@@ -10,7 +10,7 @@ export default function Mylearning() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/mylearning", {
+        const response = await axios.get("https://learnlynxbackend.onrender.com/api/mylearning", {
           withCredentials: true, // Include cookies if necessary
         });
         console.log(response);

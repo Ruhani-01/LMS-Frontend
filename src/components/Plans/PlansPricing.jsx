@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const PlanPricing = () => {
   const navigate = useNavigate();
   const checkOutHandler = async (ammount) => {
-    const verify = await axios.get("http://localhost:3000/api/verifyUser", {
+    const verify = await axios.get("https://learnlynxbackend.onrender.com/api/verifyUser", {
       withCredentials: true,
     });
     if (verify.data.success == false) {
@@ -21,12 +21,12 @@ const PlanPricing = () => {
       try {
         const {
           data: { order },
-        } = await axios.post("http://localhost:3000/api/checkout", {
+        } = await axios.post("https://learnlynxbackend.onrender.com/api/checkout", {
           ammount,
         });
         const {
           data: { key },
-        } = await axios.get("http://localhost:3000/api/getkey");
+        } = await axios.get("https://learnlynxbackend.onrender.com/api/getkey");
 
         const options = {
           key,
@@ -40,7 +40,7 @@ const PlanPricing = () => {
           handler: async function (response) {
             try {
               const savePaymentData = await axios.post(
-                `http://localhost:3000/api/teacherVerification/?auth=${verify.data.user._id}`,
+                `https://learnlynxbackend.onrender.com/api/teacherVerification/?auth=${verify.data.user._id}`,
                 response,
                 {
                   withCredentials: true,

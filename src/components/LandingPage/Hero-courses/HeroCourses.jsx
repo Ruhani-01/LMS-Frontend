@@ -8,7 +8,7 @@ export default function HeroCourses() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("/api/admin/courses")
+    fetch("https://learnlynxbackend.onrender.com/api/admin/courses")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch courses");
