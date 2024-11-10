@@ -12,7 +12,7 @@ const App = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const coursesResponse = await fetch("https://learnlynxbackend.onrender.com/api/admin/courses");
+        const coursesResponse = await axios.get("https://learnlynxbackend.onrender.com/api/admin/courses");
         if (!coursesResponse.ok) {
           throw new Error("Failed to fetch courses");
         }
