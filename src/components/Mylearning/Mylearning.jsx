@@ -1,4 +1,4 @@
-import "./myLearning.css";
+import "./mylearning.css";
 import CourseCard from "../utils/Cards/mylearningcard/card";
 import { useState, useEffect } from "react";
 import axios from "axios"; // Add this import
