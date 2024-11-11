@@ -4,7 +4,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie"; // Import js-cookie
 
 export default function Login() {
   const navigate = useNavigate();
@@ -77,6 +76,7 @@ export default function Login() {
         { withCredentials: true } // Ensure cookies are included
       );
       const teacher = response.data.user.isTeacher;
+      console.log(response);
       
       
 
@@ -85,26 +85,17 @@ export default function Login() {
         console.log(message);
         toast.error(message);
       } else {
+        
         toast.success("Welcome To LearnLynx");
-
-        // Set the teacher value in the cookie if it exists
-        // if (teacher) {
-        //   Cookies.set("teacher", teacher, { expires: 7 }); // Set cookie to expire in 7 days
-        //   window.location.href = `http://localhost:3002/admin/dashboard?auth=${response.data.user._id}`;
-        // } else {
-        //   setTimeout(() => {
-        //     navigate("/"); // Redirect after showing toast
-        //   }, 1000);
-        // }
+        localStorage.setItem("token",response.data.token);
+        localStorage.setItem("id",response.data.user._id);
+        localStorage.setItem("Teacher",response.data.user.isTeacher);
 
         setLoginData({
           email: "",
           password: "",
         });
-
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 1000); // Adjust the delay to match the autoClose time of the toast notification
+          window.location.reload();
       }
     } catch (error) {
       console.error(`Network error: ${error.message}`);

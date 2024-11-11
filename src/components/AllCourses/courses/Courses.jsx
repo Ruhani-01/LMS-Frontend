@@ -12,7 +12,8 @@ const App = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const coursesResponse = await axios.get("https://learnlynxbackend.onrender.com/api/admin/courses");
+        const coursesResponse = await fetch("https://learnlynxbackend.onrender.com/api/admin/courses");
+        console.log(coursesResponse);
         if (!coursesResponse.ok) {
           throw new Error("Failed to fetch courses");
         }
@@ -20,14 +21,14 @@ const App = () => {
         setCourses(coursesData);
 
         // Fetch the logged-in user's ID
-        const verifyResponse = await axios.get(
+        const verifyResponse = await fetch(
           "https://learnlynxbackend.onrender.com/api/verifyUser",
           {
             withCredentials: true,
           }
         );
 
-        if (verifyResponse.data.success) {
+        if (verifyResponse.status==200) {
           setUserId(verifyResponse.data.user._id);
         } else {
           throw new Error("Failed to verify user");
