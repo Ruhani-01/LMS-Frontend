@@ -1,0 +1,7 @@
+.dashboard-header {
+    font-size: 3rem;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+  

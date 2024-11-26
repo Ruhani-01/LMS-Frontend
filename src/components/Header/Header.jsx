@@ -27,7 +27,7 @@ function Header() {
     e.preventDefault(); // Prevent default behavior of the link
 
     try {
-      const response = await fetch("https://learnlynxbackend.onrender.com/api/logout", {
+      const response = await fetch("http://localhost:3000/api/logout", {
         method: "GET",
         credentials: "include", // Important for sending cookies
       });
@@ -87,7 +87,7 @@ function Header() {
             {isTeacher ? (
               <Link
                 className="link login"
-                to={`http://localhost:3002/admin/dashboard/?auth=${userId}`}
+                to={`http://localhost:3001/admin`}
               >
                 Dashboard
               </Link>

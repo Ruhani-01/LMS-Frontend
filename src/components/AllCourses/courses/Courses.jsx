@@ -12,26 +12,10 @@ const App = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const coursesResponse = await fetch("https://learnlynxbackend.onrender.com/api/admin/courses");
-        console.log(coursesResponse);
-        if (!coursesResponse.ok) {
+        const coursesResponse = await axios.get("http://localhost:3000/api/admin/courses");
+        setCourses(coursesResponse.data);
+        if (coursesResponse.status!=200) {
           throw new Error("Failed to fetch courses");
-        }
-        const coursesData = await coursesResponse.json();
-        setCourses(coursesData);
-
-        // Fetch the logged-in user's ID
-        const verifyResponse = await fetch(
-          "https://learnlynxbackend.onrender.com/api/verifyUser",
-          {
-            withCredentials: true,
-          }
-        );
-
-        if (verifyResponse.status==200) {
-          setUserId(verifyResponse.data.user._id);
-        } else {
-          throw new Error("Failed to verify user");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -72,43 +56,3 @@ const App = () => {
 
 export default App;
 
-// import CourseCard from "../cards/Card";
-// import "../AllCourses.css";
-// import "./Courses.css";
-// import { useState, useEffect } from "react";
-// // import {useNavigate} from 'react-router-dom'
-
-// const App = () => {
-//   const [courses, setCourses] = useState([]);
-//   useEffect(() => {
-//     fetch("/api/admin/courses")
-//       .then((response) => {
-//         if (!response.ok) {
-//           throw new Error("Failed to fetch courses");
-//         }
-//         return response.json();
-//       })
-//       .then((data) => setCourses(data))
-//       .catch((error) => setError(error.message));
-//   }, []);
-
-//   return (
-//     <div className="App">
-//       <div className="course-grid">
-//         {courses.map((course) => (
-//           <CourseCard
-//             key={course._id}
-//             title={course.title}
-//             image={course.img}
-//             discount_price={course.discountPrice}
-//             price={course.price}
-//             id={course._id}
-//             owner={course.owner.username}
-//           />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default App;

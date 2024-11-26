@@ -9,24 +9,20 @@ import { useNavigate } from "react-router-dom";
 const PlanPricing = () => {
   const navigate = useNavigate();
   const checkOutHandler = async (ammount) => {
-    const verify = await axios.get("https://learnlynxbackend.onrender.com/api/verifyUser", {
-      withCredentials: true,
-    });
-    if (verify.data.success == false) {
-      toast.error("Please Login First");
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000);
-    } else {
       try {
+        if(!localStorage.getItem("id")){
+          toast.error("Please Login First!");
+          setTimeout(()=>{navigate('/login')},1500);
+        }
+        else{
         const {
           data: { order },
-        } = await axios.post("https://learnlynxbackend.onrender.com/api/checkout", {
+        } = await axios.post("http://localhost:3000/api/checkout", {
           ammount,
         });
         const {
           data: { key },
-        } = await axios.get("https://learnlynxbackend.onrender.com/api/getkey");
+        } = await axios.get("http://localhost:3000/api/getkey");
 
         const options = {
           key,
@@ -40,7 +36,7 @@ const PlanPricing = () => {
           handler: async function (response) {
             try {
               const savePaymentData = await axios.post(
-                `https://learnlynxbackend.onrender.com/api/teacherVerification/?auth=${verify.data.user._id}`,
+                `http://localhost:3000/api/teacherVerification/?auth=${localStorage.getItem("id")}`,
                 response,
                 {
                   withCredentials: true,
@@ -49,7 +45,7 @@ const PlanPricing = () => {
               console.log(savePaymentData);
 
               if (savePaymentData.status==200) {
-                // window.location.href = `http://localhost:3002/admin/dashboard/?auth=${verify.data.user._id}`;
+                window.location.href = `http://localhost:3001/admin/`;
                 toast.success("Getting Access of teacher");
               } 
             } catch (error) {
@@ -58,8 +54,8 @@ const PlanPricing = () => {
             }
           },
           prefill: {
-            name: `${verify.data.user.username}`,
-            email: `${verify.data.user.email}`,
+            name: `${localStorage.getItem("username")}`,
+            email: `${localStorage.getItem("email")}`,
             contact: "9000090000",
           },
           notes: {
@@ -72,10 +68,11 @@ const PlanPricing = () => {
 
         var rzp1 = window.Razorpay(options);
         rzp1.open();
+      }
       } catch (err) {
         console.log(err);
       }
-    }
+    
   };
   return (
     <>

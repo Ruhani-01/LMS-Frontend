@@ -8,7 +8,7 @@ export default function HeroCourses() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("https://learnlynxbackend.onrender.com/api/admin/courses")
+    fetch("http://localhost:3000/api/admin/courses")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch courses");
@@ -51,45 +51,3 @@ export default function HeroCourses() {
     </>
   );
 }
-
-// import Card from "../../utils/Cards/LandingPageCards/Card.jsx";
-// import "./HeroCourses.css";
-// import { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
-// export default function HeroCourses() {
-//   const [courses,setCourses]=useState([]);
-//   const navigate=useNavigate();
-//   useEffect(() => {
-//     fetch('/api/admin/courses')
-//       .then(response => {
-//         if (!response.ok) {
-//           throw new Error('Failed to fetch courses');
-//         }
-//         return response.json();
-//       })
-//       .then(data => setCourses(data))
-//       .catch(error => setError(error.message));
-//   }, []);
-//   return (
-//     <>
-//       <div className="page3">
-//         <p className="popular">
-//           Popular <span className="courses">Courses</span>
-//         </p>
-//         <div className="container2">
-//           {
-//             courses.slice(0,3).map(course=>(<Card title={course.title} image={course.img} dispr={course.discountPrice} price={course.price}/>))
-//           }
-//         </div>
-
-//       <button className="explore-btn" onClick={()=>{navigate('/all-courses')}}>
-//         <p className="explore">
-//           Explore <span className="explore-arrow">→</span>
-//         </p>
-//       </button>
-
-//       </div>
-//     </>
-//   );
-// }

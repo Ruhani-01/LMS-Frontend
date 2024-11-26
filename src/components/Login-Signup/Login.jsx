@@ -39,7 +39,7 @@ export default function Login() {
     }
 
     try {
-      const response = await axios.post("https://learnlynxbackend.onrender.com/api/signup", {
+      const response = await axios.post("http://localhost:3000/api/signup", {
         username: signUpData.username,
         email: signUpData.email,
         password: signUpData.password,
@@ -68,7 +68,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        "https://learnlynxbackend.onrender.com/api/login",
+        "http://localhost:3000/api/login",
         {
           email: loginData.email,
           password: loginData.password,
@@ -90,6 +90,9 @@ export default function Login() {
         localStorage.setItem("token",response.data.token);
         localStorage.setItem("id",response.data.user._id);
         localStorage.setItem("Teacher",response.data.user.isTeacher);
+        localStorage.setItem("username",response.data.user.username);
+        localStorage.setItem("email",response.data.user.email); 
+        setTimeout(()=>{navigate('/my-learnings')},1500)
 
         setLoginData({
           email: "",

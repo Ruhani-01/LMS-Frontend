@@ -14,27 +14,20 @@ export default function ViewCourse() {
 
   const checkOutHandler = async (ammount) => {
     try {
-      const verify = await axios.get("https://learnlynxbackend.onrender.com/api/verifyUser", {
-        withCredentials: true,
-      });
-
-      if (!verify.data.success) {
-        toast.error("Please Login First");
-        setTimeout(() => {
-          navigate("/login");
-        }, 3000);
-        return;
+      if(!localStorage.getItem("id")){
+        toast.error("Please Login First!");
+        setTimeout(()=>{navigate('/login')},1500);
       }
-
+        else{
       const {
         data: { order },
-      } = await axios.post("https://learnlynxbackend.onrender.com/api/checkout", {
+      } = await axios.post("http://localhost:3000/api/checkout", {
         ammount,
       });
 
       const {
         data: { key },
-      } = await axios.get("https://learnlynxbackend.onrender.com/api/getkey");
+      } = await axios.get("http://localhost:3000/api/getkey");
 
       const options = {
         key,
@@ -47,7 +40,7 @@ export default function ViewCourse() {
         handler: async function (response) {
           try {
             const savePaymentData = await axios.post(
-              `https://learnlynxbackend.onrender.com/api/paymentverification/${id}?auth=${verify.data.user._id}`,
+              `http://localhost:3000/api/paymentverification/${id}?auth=${localStorage.getItem("id")}`,
               response,
               {
                 withCredentials: true,
@@ -65,8 +58,8 @@ export default function ViewCourse() {
           }
         },
         prefill: {
-          name: verify.data.user.username,
-          email: verify.data.user.email,
+          name: localStorage.getItem("username"),
+          email: localStorage.getItem("email"),
           contact: "9000090000",
         },
         notes: {
@@ -79,6 +72,7 @@ export default function ViewCourse() {
 
       const rzp1 = new window.Razorpay(options);
       rzp1.open();
+    }
     } catch (err) {
       console.error("Error during checkout:", err);
       toast.error("An error occurred during checkout.");
@@ -86,7 +80,7 @@ export default function ViewCourse() {
   };
 
   useEffect(() => {
-    fetch(`https://learnlynxbackend.onrender.com/api/admin/course/${id}`)
+    fetch(`http://localhost:3000/api/admin/course/${id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch course details");
