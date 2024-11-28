@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 const CourseCard = ({ image, courseName, id }) => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const styles = {
     cardContainer: {
       display: "flex",
@@ -55,7 +55,7 @@ const CourseCard = ({ image, courseName, id }) => {
       color: "black",
       cursor: "pointer",
       border: "none",
-      borderRadius : '0.25rem',
+      borderRadius: "0.25rem",
       padding: "0.5rem 1rem 0.5rem 1rem",
     },
   };
@@ -70,7 +70,14 @@ const CourseCard = ({ image, courseName, id }) => {
         {/* <p style={styles.tutorName}>{tutorName}</p> */}
       </div>
       <div style={styles.priceContainer}>
-        <button style={styles.ViewCourse} onClick={()=>{navigate(`/start/${id}`)}}>View Course</button>
+        <button
+          style={styles.ViewCourse}
+          onClick={() => {
+            navigate(`/start/${id}`);
+          }}
+        >
+          View Course
+        </button>
       </div>
     </div>
   );
