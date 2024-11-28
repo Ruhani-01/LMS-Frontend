@@ -3,75 +3,103 @@ import axios from "axios";
 import "./Dash_student.css";
 
 function Dash_students() {
+  const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
-  const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
+  const [selectedCourse, setSelectedCourse] = useState("");
 
-  // Fetch student data from the API
-  const fetchStudents = async () => {
+  const fetchCourses = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/mystudents?auth=${localStorage.getItem("id")}`);
+      const response = await axios.get(
+        `http://localhost:3000/api/admin/dashCourses?auth=${localStorage.getItem(
+          "id"
+        )}`
+      );
+      setCourses(response.data);
       console.log(response);
-      setStudents(response.data);
     } catch (error) {
-      console.error("Error fetching student data:", error);
+      console.error("Error fetching courses:", error);
     }
   };
 
-  // Fetch students on component mount
+  const fetchStudents = async (courseId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/admin/dashCourses?auth=${localStorage.getItem(
+          "id"
+        )}`
+      );
+
+      const selectedCourseData = response.data.find(
+        (course) => course._id === courseId
+      );
+
+      if (selectedCourseData) {
+        setStudents(selectedCourseData.students || []);
+      } else {
+        setStudents([]);
+        console.warn("No course found with the given ID.");
+      }
+    } catch (error) {
+      console.error("Error fetching students:", error);
+    }
+  };
+
+  const handleCourseChange = (event) => {
+    const courseId = event.target.value;
+    setSelectedCourse(courseId);
+    if (courseId) fetchStudents(courseId);
+  };
+
   useEffect(() => {
-    fetchStudents();
+    fetchCourses();
   }, []);
 
-  // Sorting functionality
-  const handleSort = (key) => {
-    let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
-    setStudents((prevStudents) => {
-      const sortedStudents = [...prevStudents].sort((a, b) => {
-        if (a[key] < b[key]) return direction === "ascending" ? -1 : 1;
-        if (a[key] > b[key]) return direction === "ascending" ? 1 : -1;
-        return 0;
-      });
-      return sortedStudents;
-    });
-  };
-
-  // Export to Excel
-  const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(students);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Students");
-    XLSX.writeFile(workbook, "Student_Data.xlsx");
-  };
-
   return (
-    <div>
-      <h1>Student Information Table</h1>
-      <button onClick={exportToExcel} className="export-button">
-        Download Excel
-      </button>
-      <div className="table-container">
-        <table className="table">
-          <thead>
-            <tr>
-              <th onClick={() => handleSort("name")}>Student Name</th>
-              <th onClick={() => handleSort("email")}>Email</th>
-              <th onClick={() => handleSort("course")}>Course Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students.map((student) => (
-              <tr key={student.id}>
-                <td>{student.username}</td>
-                <td>{student.email}</td>
-                <td>{student.course}</td>
+    <div className="dash-students-container">
+      <h1 className="dash-students-title">Student Information Table</h1>
+
+      <div className="dash-students-dropdown">
+        <label htmlFor="course-select" className="dash-students-label">
+          Select a Course:
+        </label>
+        <select
+          id="course-select"
+          value={selectedCourse}
+          onChange={handleCourseChange}
+          className="dash-students-select"
+        >
+          <option value="">-- Select Course --</option>
+          {courses.map((course) => (
+            <option key={course._id} value={course._id}>
+              {course.title}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="dash-students-table-container">
+        {students.length > 0 ? (
+          <table className="dash-students-table">
+            <thead>
+              <tr>
+                <th>Student Name</th>
+                <th>Email</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {students.map((student) => (
+                <tr key={student._id}>
+                  <td>{student.username}</td>
+                  <td>{student.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p className="dash-students-no-data">
+            No students available for the selected course.
+          </p>
+        )}
       </div>
     </div>
   );

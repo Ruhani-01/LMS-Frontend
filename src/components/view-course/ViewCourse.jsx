@@ -5,6 +5,7 @@ import axios from "axios";
 import logo from "../../assets/logo-learnlynx.png";
 import { toast, ToastContainer } from "react-toastify";
 import "../../../node_modules/react-toastify/dist/ReactToastify.css";
+import "./ViewCourse.css";
 
 export default function ViewCourse() {
   const { id } = useParams();
@@ -14,65 +15,67 @@ export default function ViewCourse() {
 
   const checkOutHandler = async (ammount) => {
     try {
-      if(!localStorage.getItem("id")){
+      if (!localStorage.getItem("id")) {
         toast.error("Please Login First!");
-        setTimeout(()=>{navigate('/login')},1500);
-      }
-        else{
-      const {
-        data: { order },
-      } = await axios.post("http://localhost:3000/api/checkout", {
-        ammount,
-      });
+        setTimeout(() => {
+          navigate("/login");
+        }, 1500);
+      } else {
+        const {
+          data: { order },
+        } = await axios.post("http://localhost:3000/api/checkout", {
+          ammount,
+        });
 
-      const {
-        data: { key },
-      } = await axios.get("http://localhost:3000/api/getkey");
+        const {
+          data: { key },
+        } = await axios.get("http://localhost:3000/api/getkey");
 
-      const options = {
-        key,
-        amount: order.amount,
-        currency: "INR",
-        name: "LearnLynx",
-        description: "Testing Razorpay",
-        image: logo,
-        order_id: order.id,
-        handler: async function (response) {
-          try {
-            const savePaymentData = await axios.post(
-              `http://localhost:3000/api/paymentverification/${id}?auth=${localStorage.getItem("id")}`,
-              response,
-              {
-                withCredentials: true,
+        const options = {
+          key,
+          amount: order.amount,
+          currency: "INR",
+          name: "LearnLynx",
+          description: "Testing Razorpay",
+          image: logo,
+          order_id: order.id,
+          handler: async function (response) {
+            try {
+              const savePaymentData = await axios.post(
+                `http://localhost:3000/api/paymentverification/${id}?auth=${localStorage.getItem(
+                  "id"
+                )}`,
+                response,
+                {
+                  withCredentials: true,
+                }
+              );
+
+              if (savePaymentData.status == 200) {
+                navigate("/my-learnings");
+              } else {
+                toast.error("Payment Verification Failed!");
               }
-            );
-            
-
-            if (savePaymentData.status==200) {
-              navigate("/my-learnings");
-            } else {
-              toast.error("Payment Verification Failed!");
+            } catch (error) {
+              toast.error("Error in Payment Verification!");
             }
-          } catch (error) {
-            toast.error("Error in Payment Verification!");
-          }
-        },
-        prefill: {
-          name: localStorage.getItem("username"),
-          email: localStorage.getItem("email"),
-          contact: "9000090000",
-        },
-        notes: {
-          address: "Razorpay Corporate Office",
-        },
-        theme: {
-          color: "#f9c365",
-        },
-      };
+          },
+          prefill: {
+            name: localStorage.getItem("username"),
+            email: localStorage.getItem("email"),
+            contact: "9000090000",
+          },
+          notes: {
+            address: "Razorpay Corporate Office",
+          },
+          theme: {
+            color: "#f9c365",
+          },
+        };
 
-      const rzp1 = new window.Razorpay(options);
-      rzp1.open();
-    }
+        const rzp1 = new window.Razorpay(options);
+        rzp1.open();
+      }
     } catch (err) {
       console.error("Error during checkout:", err);
       toast.error("An error occurred during checkout.");

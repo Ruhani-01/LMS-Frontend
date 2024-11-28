@@ -23,7 +23,7 @@
 .course-info h1 {
   font-size: 2.75rem;
   font-family: "Outfit";
-
+  color: #999;
   font-weight: 800;
   margin-bottom: 1rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
