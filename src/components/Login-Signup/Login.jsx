@@ -77,28 +77,27 @@ export default function Login() {
       );
       const teacher = response.data.user.isTeacher;
       console.log(response);
-      
-      
 
       if (response.data.statusCode === 400) {
         const message = response.data.message;
         console.log(message);
         toast.error(message);
       } else {
-        
         toast.success("Welcome To LearnLynx");
-        localStorage.setItem("token",response.data.token);
-        localStorage.setItem("id",response.data.user._id);
-        localStorage.setItem("Teacher",response.data.user.isTeacher);
-        localStorage.setItem("username",response.data.user.username);
-        localStorage.setItem("email",response.data.user.email); 
-        setTimeout(()=>{navigate('/my-learnings')},1500)
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("id", response.data.user._id);
+        localStorage.setItem("Teacher", response.data.user.isTeacher);
+        localStorage.setItem("username", response.data.user.username);
+        localStorage.setItem("email", response.data.user.email);
+        setTimeout(() => {
+          navigate("/my-learnings");
+        }, 1500);
 
         setLoginData({
           email: "",
           password: "",
         });
-          window.location.reload();
+        window.location.reload();
       }
     } catch (error) {
       console.error(`Network error: ${error.message}`);
@@ -195,4 +194,3 @@ export default function Login() {
     </>
   );
 }
-

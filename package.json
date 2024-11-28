@@ -10,7 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@auth0/auth0-react": "github:auth0/auth0-react",
+=======
+    "@auth0/auth0-react": "^2.2.4",
+>>>>>>> 3bfef62eebba8d280fff7712b9e9f6d23c7d74b3
     "axios": "^1.7.6",
     "js-cookie": "^3.0.5",
     "react": "^18.3.1",
