@@ -1,0 +1,61 @@
+.upcoming-classes-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .heading {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .classes-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .class-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    width: 320px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .class-info {
+    max-width: 200px;
+  }
+  
+  .course-name {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #007BFF;
+  }
+  
+  .class-details {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .join-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+  }
+  
+  .join-button:hover {
+    background-color: #218838;
+  }
+  
