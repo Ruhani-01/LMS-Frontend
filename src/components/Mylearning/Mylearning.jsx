@@ -32,6 +32,7 @@ export default function Mylearning() {
             courses.map((course, index) => (
               <CourseCard
                 key={index}
+                id={course._id}
                 image={course.img}
                 courseName={course.title}
               />

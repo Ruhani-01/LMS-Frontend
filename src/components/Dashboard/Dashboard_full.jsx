@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom";
+import { Route, Navigate } from "react-router-dom";
 import Layout from "./layout/Layout.jsx";
 import Dashboard from "./dashboard/Dashboard.jsx";
 import Chat from "./dash_chat/Dash_chat.jsx";
@@ -9,7 +9,14 @@ import Notify from "./dash_notify/Dash_notify.jsx";
 import Schedule from "./dash_schedule/Dash_schedule.jsx";
 import Students from "./dash_students/Dash_students.jsx";
 
+
 function Dashboard_full() {
+  const isTeacher = JSON.parse(localStorage.getItem("teacher"));
+
+  if (isTeacher === false) {
+    return <div>You have not access to this</div>;
+  }
+
   return (
     <>
       <Route path="/admin" element={<Layout />}>

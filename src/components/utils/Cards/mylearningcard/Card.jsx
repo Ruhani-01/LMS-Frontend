@@ -1,5 +1,7 @@
 import React from "react";
-const CourseCard = ({ image, courseName, rating }) => {
+import { useNavigate } from "react-router-dom";
+const CourseCard = ({ image, courseName, id }) => {
+  const navigate=useNavigate();
   const styles = {
     cardContainer: {
       display: "flex",
@@ -57,6 +59,7 @@ const CourseCard = ({ image, courseName, rating }) => {
       padding: "0.5rem 1rem 0.5rem 1rem",
     },
   };
+
   return (
     <div style={styles.cardContainer}>
       <div style={styles.imageContainer}>
@@ -67,7 +70,7 @@ const CourseCard = ({ image, courseName, rating }) => {
         {/* <p style={styles.tutorName}>{tutorName}</p> */}
       </div>
       <div style={styles.priceContainer}>
-        <button style={styles.ViewCourse}>View Course</button>
+        <button style={styles.ViewCourse} onClick={()=>{navigate(`/start/${id}`)}}>View Course</button>
       </div>
     </div>
   );
