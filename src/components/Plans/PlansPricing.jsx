@@ -3,18 +3,22 @@ import logo from "../../assets/logo-learnlynx.png";
 import "../../../node_modules/react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
-import "../../../node_modules/react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 
 const PlanPricing = () => {
   const navigate = useNavigate();
+  const id = localStorage.getItem("id");
+  const isTeacher = localStorage.getItem("Teacher") === "true"; // Check for teacher status
+  console.log("Is Teacher: ", isTeacher); // Debugging the value of isTeacher
+
   const checkOutHandler = async (ammount) => {
-      try {
-        if(!localStorage.getItem("id")){
-          toast.error("Please Login First!");
-          setTimeout(()=>{navigate('/login')},1500);
-        }
-        else{
+    try {
+      if (!localStorage.getItem("id")) {
+        toast.error("Please Login First!");
+        setTimeout(() => {
+          navigate("/login");
+        }, 1500);
+      } else {
         const {
           data: { order },
         } = await axios.post("http://localhost:3000/api/checkout", {
@@ -31,12 +35,13 @@ const PlanPricing = () => {
           name: "LearnLynx",
           description: "Testing Razorpay",
           image: `${logo}`,
-          order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-          // callback_url: `http://localhost:3000/api/teacherVerification/?auth=${verify.data.user._id}`,
+          order_id: order.id,
           handler: async function (response) {
             try {
               const savePaymentData = await axios.post(
-                `http://localhost:3000/api/teacherVerification/?auth=${localStorage.getItem("id")}`,
+                `http://localhost:3000/api/teacherVerification/?auth=${localStorage.getItem(
+                  "id"
+                )}`,
                 response,
                 {
                   withCredentials: true,
@@ -44,10 +49,9 @@ const PlanPricing = () => {
               );
               console.log(savePaymentData);
 
-              if (savePaymentData.status==200) {
-                window.location.href = `http://localhost:3001/admin/`;
-                toast.success("Getting Access of teacher");
-              } 
+              if (savePaymentData.status == 200) {
+                window.location.href = `http://localhost:3001/admin/${id}`;
+              }
             } catch (error) {
               console.log(error);
               toast.error("Error in Payment Verification!");
@@ -69,11 +73,11 @@ const PlanPricing = () => {
         var rzp1 = window.Razorpay(options);
         rzp1.open();
       }
-      } catch (err) {
-        console.log(err);
-      }
-    
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   return (
     <>
       <div className="pricing-container">
@@ -106,12 +110,13 @@ const PlanPricing = () => {
                 <li>Advanced analytics & reporting</li>
               </ul>
               <button
-                className="checkout-btn"
+                className={`checkout-btn ${isTeacher ? "disabled" : ""}`} // Apply "disabled" class when isTeacher is true
                 onClick={() => {
                   checkOutHandler(1499);
                 }}
+                disabled={isTeacher} // Disable button if teacher is true
               >
-                Checkout
+                {isTeacher ? "Enrolled" : "Checkout"} {/* Change text based on isTeacher */}
               </button>
             </div>
           </div>

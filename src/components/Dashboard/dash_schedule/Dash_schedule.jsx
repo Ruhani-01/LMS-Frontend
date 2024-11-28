@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Dash_schedule.css';
 
 function DashSchedule() {
-  const [courses, setCourses] = useState([]); // To store the courses fetched from the backend
+  const [courses, setCourses] = useState([]);
   const [formData, setFormData] = useState({
     course: '',
     date: '',
@@ -12,19 +12,19 @@ function DashSchedule() {
   });
   const [message, setMessage] = useState('');
 
-  // Fetch courses from the backend when the component mounts
+  // Fetch courses on component mount
   useEffect(() => {
     axios
       .get(`http://localhost:3000/api/admin/dashCourses?auth=${localStorage.getItem('id')}`)
       .then((response) => {
-        setCourses(response.data); // Set the fetched courses to state
+        setCourses(response.data);
       })
       .catch((error) => {
         console.error('Error fetching courses:', error);
       });
   }, []);
 
-  // Handle input changes
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -33,16 +33,28 @@ function DashSchedule() {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    const roomCode=Date.now().toString();
-    console.log(roomCode);
-
+    const roomCode = Date.now().toString();
     const { course, date, time_start, time_to } = formData;
 
+    // Validate form data
     if (!course) {
       setMessage('Please select a course.');
       return;
     }
 
+    if (time_to <= time_start) {
+      setMessage('End time must be after start time.');
+      return;
+    }
+
+    const selectedDateTime = new Date(`${date}T${time_start}`);
+    const now = new Date();
+    if (selectedDateTime <= now) {
+      setMessage('Please select a future date and time.');
+      return;
+    }
+
+    // Schedule class
     axios
       .post(
         `http://localhost:3000/api/scheduleClass?course=${course}&teacher=${localStorage.getItem('id')}`,
@@ -50,7 +62,7 @@ function DashSchedule() {
           date,
           time_start,
           time_to,
-          roomCode
+          roomCode,
         }
       )
       .then((response) => {
@@ -103,6 +115,7 @@ function DashSchedule() {
             value={formData.date}
             onChange={handleChange}
             required
+            min={new Date().toISOString().split('T')[0]} // Disable past dates
           />
         </div>
 
@@ -116,6 +129,7 @@ function DashSchedule() {
             value={formData.time_start}
             onChange={handleChange}
             required
+            min={new Date().toISOString().split('T')[1].substring(0, 5)} // Disable past times
           />
         </div>
 
@@ -129,6 +143,7 @@ function DashSchedule() {
             value={formData.time_to}
             onChange={handleChange}
             required
+            min={formData.time_start} // Ensure end time is after start time
           />
         </div>
 

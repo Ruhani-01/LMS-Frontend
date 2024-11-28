@@ -2,12 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './Upcoming.css';
+import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 
 const Upcoming = () => {
   const { id } = useParams(); // Extract course ID from the URL
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  const joinMeeting = (roomCode) => {
+    const appID = 1731996383;
+    const serverSecret = "07bf73fbdd4291dc94114777d2d2d975";
+    const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+      appID,
+      serverSecret,
+      roomCode,
+      Date.now().toString(),
+      `${localStorage.getItem("username")}`
+    );
+
+    const zp = ZegoUIKitPrebuilt.create(kitToken);
+    zp.joinRoom({
+      container: document.getElementById("zego-cloud-container"),
+      scenario: { mode: ZegoUIKitPrebuilt.VideoConference },
+    });
+  };
 
   useEffect(() => {
     const fetchUpcomingClasses = async () => {
@@ -52,7 +71,7 @@ const Upcoming = () => {
                     </span>
                   </p>
                 </div>
-                <button className="join-button">Join Class</button>
+                <button className="join-button" onClick={joinMeeting(classItem.roomCode)}>Join Class</button>
               </div>
             ))
           ) : (

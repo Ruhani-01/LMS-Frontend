@@ -1,3 +1,4 @@
+/* PlanPricing.css */
 .pricing-container {
   display: flex;
   justify-content: center;
@@ -111,4 +112,15 @@
 
 .checkout-btn:hover {
   background-color: #d89d4d;
+}
+
+/* Disabled button styles */
+.checkout-btn.disabled {
+  background-color: #b0b0b0; /* Gray color for disabled state */
+  color: #6d6d6d; /* Darker gray text */
+  cursor: not-allowed; /* Prevent cursor from showing as a pointer */
+}
+
+.checkout-btn:disabled {
+  opacity: 0.7;
 }

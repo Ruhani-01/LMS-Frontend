@@ -13,6 +13,7 @@ function Header() {
   const [isTeacher, setIsTeacher] = useState(false);
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
+  const id=localStorage.getItem("id");
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -87,7 +88,7 @@ function Header() {
             {isTeacher ? (
               <Link
                 className="link login"
-                to={`http://localhost:3001/admin`}
+                to={`http://localhost:3001/admin/${id}`}
               >
                 Dashboard
               </Link>

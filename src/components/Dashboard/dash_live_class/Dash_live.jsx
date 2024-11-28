@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Dash_live.css';
 import axios from 'axios';
+import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 
 function Dash_live() {
   const [liveClasses, setLiveClasses] = useState([]);
@@ -23,7 +24,26 @@ function Dash_live() {
     fetchLiveClasses();
   }, []);
 
+  const startMeetingHandler = (roomCode) => {
+    const appID = 1731996383;
+    const serverSecret = "07bf73fbdd4291dc94114777d2d2d975";
+    const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+      appID,
+      serverSecret,
+      roomCode,
+      Date.now().toString(),
+      `${localStorage.getItem("username")}`
+    );
+
+    const zp = ZegoUIKitPrebuilt.create(kitToken);
+    zp.joinRoom({
+      container: document.getElementById("zego-cloud-container"),
+      scenario: { mode: ZegoUIKitPrebuilt.VideoConference },
+    });
+  };
+
   return (
+    <>
     <div className="live-classes-container">
       <h1>Live Classes</h1>
       {error && <p className="error-message">{error}</p>}
@@ -38,17 +58,19 @@ function Dash_live() {
               </p>
               <button
                 className="start-class-button"
-                onClick={() => alert(`Starting class: ${liveClass.courseName}`)}
+                onClick={()=>{startMeetingHandler(liveClass.roomCode)}}
               >
                 Start Class
               </button>
             </div>
+            
           ))
         ) : (
           <p>No live classes available.</p>
         )}
       </div>
     </div>
+    </>
   );
 }
 
