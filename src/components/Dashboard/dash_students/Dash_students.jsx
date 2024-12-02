@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as XLSX from "xlsx"; // Import the xlsx library
 import "./Dash_student.css";
 
 function Dash_students() {
@@ -50,6 +51,18 @@ function Dash_students() {
     if (courseId) fetchStudents(courseId);
   };
 
+  const handleExportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(
+      students.map((student) => ({
+        "Student Name": student.username,
+        Email: student.email,
+      }))
+    );
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Students");
+    XLSX.writeFile(wb, "students_data.xlsx");
+  };
+
   useEffect(() => {
     fetchCourses();
   }, []);
@@ -79,22 +92,27 @@ function Dash_students() {
 
       <div className="dash-students-table-container">
         {students.length > 0 ? (
-          <table className="dash-students-table">
-            <thead>
-              <tr>
-                <th>Student Name</th>
-                <th>Email</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((student) => (
-                <tr key={student._id}>
-                  <td>{student.username}</td>
-                  <td>{student.email}</td>
+          <>
+            <button onClick={handleExportToExcel} className="export-btn">
+              Export to Excel
+            </button>
+            <table className="dash-students-table">
+              <thead>
+                <tr>
+                  <th>Student Name</th>
+                  <th>Email</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {students.map((student) => (
+                  <tr key={student._id}>
+                    <td>{student.username}</td>
+                    <td>{student.email}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
         ) : (
           <p className="dash-students-no-data">
             No students available for the selected course.

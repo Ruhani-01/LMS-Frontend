@@ -1,61 +1,137 @@
-.upcoming-classes-container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
+/* Popup overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Popup container */
+.popup-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  .heading {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #333;
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .classes-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-  }
-  
-  .class-container {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+}
+
+/* Heading of Popup */
+.popup-heading {
+  font-size: 24px;
+  font-weight: bold;
+  color: #f9c365; /* Theme color */
+  margin-bottom: 20px;
+}
+
+/* List of classes inside popup */
+.popup-classes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.popup-class-container {
+  background-color: #fdecc6; /* Light background */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup-course-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.popup-class-details {
+  color: #555;
+  font-size: 14px;
+}
+
+.popup-join-button {
+  background-color: #f9c365; /* Theme color */
+  color: #333;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.popup-join-button:hover {
+  background-color: #f8a700; /* Slightly darker shade */
+}
+
+/* Close Button Styling */
+.popup-close-btn {
+  background-color: #ff4e4e;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: none;
+  margin-top: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.popup-close-btn:hover {
+  background-color: #f95353;
+}
+
+/* Button to open the popup */
+.view-classes-btn {
+  background-color: #f9c365;
+  color: #333;
+  padding: 12px 25px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-classes-btn:hover {
+  background-color: #f8a700;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .popup-container {
+    width: 95%;
     padding: 15px;
-    width: 320px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
-  
-  .class-info {
-    max-width: 200px;
+
+  .popup-classes-list {
+    gap: 10px;
   }
-  
-  .course-name {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #007BFF;
+
+  .view-classes-btn {
+    width: 100%;
+    padding: 10px;
   }
-  
-  .class-details {
-    font-size: 1rem;
-    color: #555;
-  }
-  
-  .join-button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s;
-  }
-  
-  .join-button:hover {
-    background-color: #218838;
-  }
-  
+}
