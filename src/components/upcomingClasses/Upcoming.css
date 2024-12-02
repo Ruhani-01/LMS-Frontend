@@ -1,49 +1,70 @@
-/* Popup overlay */
+/* View Classes Button */
+.view-classes-btn {
+  display: block;
+  margin: 50px auto;
+  padding: 15px 30px;
+  background-color: #f9c365;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.view-classes-btn:hover {
+  background-color: #ffa200;
+  transform: scale(1.05);
+}
+
+.view-classes-btn:active {
+  transform: scale(1);
+}
+
+/* Popup Overlay */
 .popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
 }
 
-/* Popup container */
+/* Popup Container */
 .popup-container {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 500px;
   width: 90%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  animation: fadeIn 0.5s ease-in-out;
+  max-width: 500px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: popup-fade-in 0.3s ease;
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Heading of Popup */
+/* Popup Heading */
 .popup-heading {
+  margin-top: 0;
   font-size: 24px;
   font-weight: bold;
-  color: #f9c365; /* Theme color */
-  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+  margin-bottom: 15px;
 }
 
-/* List of classes inside popup */
+/* Popup Content */
+.popup-content {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Classes List */
 .popup-classes-list {
   display: flex;
   flex-direction: column;
@@ -51,87 +72,96 @@
 }
 
 .popup-class-container {
-  background-color: #fdecc6; /* Light background */
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.popup-class-info {
+  margin-bottom: 10px;
 }
 
 .popup-course-name {
   font-size: 18px;
-  font-weight: bold;
   color: #333;
+  margin: 0 0 10px 0;
 }
 
-.popup-class-details {
-  color: #555;
+.popup-class-details span {
   font-size: 14px;
+  color: #555;
 }
 
+/* Join Button */
 .popup-join-button {
-  background-color: #f9c365; /* Theme color */
-  color: #333;
+  padding: 10px 20px;
+  background-color: #f9c365;
+  color: #fff;
   border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 14px;
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
 
 .popup-join-button:hover {
-  background-color: #f8a700; /* Slightly darker shade */
+  background-color: #ffa200;
 }
 
-/* Close Button Styling */
+/* Close Button */
 .popup-close-btn {
-  background-color: #ff4e4e;
-  color: white;
-  padding: 8px 15px;
-  border-radius: 5px;
-  border: none;
-  margin-top: 20px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.popup-close-btn:hover {
-  background-color: #f95353;
-}
-
-/* Button to open the popup */
-.view-classes-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
   background-color: #f9c365;
-  color: #333;
-  padding: 12px 25px;
-  font-size: 16px;
-  font-weight: bold;
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 50%;
+  font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.view-classes-btn:hover {
-  background-color: #f8a700;
+.popup-close-btn:hover {
+  background-color: #ffa200;
+}
+
+/* Animations */
+@keyframes popup-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .popup-container {
-    width: 95%;
     padding: 15px;
   }
 
-  .popup-classes-list {
-    gap: 10px;
+  .popup-heading {
+    font-size: 20px;
   }
 
-  .view-classes-btn {
-    width: 100%;
-    padding: 10px;
+  .popup-course-name {
+    font-size: 16px;
+  }
+
+  .popup-class-details span {
+    font-size: 12px;
+  }
+
+  .popup-join-button {
+    font-size: 12px;
   }
 }

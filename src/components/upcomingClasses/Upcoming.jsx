@@ -34,7 +34,15 @@ const Upcoming = () => {
       try {
         setLoading(true);
         const response = await axios.get(`/api/Upcomingclasses?course=${id}`);
-        setClasses(response.data); // Update state with fetched data
+
+        // Filter for today's and future classes
+        const today = new Date();
+        const filteredClasses = response.data.filter((classItem) => {
+          const classDate = new Date(classItem.date);
+          return classDate >= today;
+        });
+
+        setClasses(filteredClasses); // Update state with filtered data
         setLoading(false);
       } catch (err) {
         console.error("Error fetching classes:", err);
@@ -71,7 +79,8 @@ const Upcoming = () => {
                           </h3>
                           <p className="popup-class-details">
                             <span>
-                              <strong>Date:</strong> {classItem.date}
+                              <strong>Date:</strong>{" "}
+                              {new Date(classItem.date).toLocaleDateString()}
                             </span>
                             <br />
                             <span>
