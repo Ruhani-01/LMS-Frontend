@@ -8,6 +8,11 @@ const App = () => {
   const [courses, setCourses] = useState([]);
   const [userId, setUserId] = useState(null);
 
+  useEffect(()=>{
+    setUserId(localStorage.getItem("id"))
+  },[])
+  
+
   // Fetch courses and user ID on component mount
   useEffect(() => {
     const fetchCourses = async () => {

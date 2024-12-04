@@ -67,11 +67,14 @@
   transition: 0.2s ease-in;
   cursor: pointer;
   border-radius: 20px;
-  border: 2px solid black;
+  /* border: 2px solid black; */
 }
 .signupbutton {
   background: #ffaf24;
   border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 2px solid black;
 }
 
@@ -96,7 +99,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: 0.5s ease-in-out;
-  transform: scale(0.6);
+  transform: scale(0.6) translateY(1rem);
 }
 
 #loginSignupChk:checked ~ .loginSignupLogin {
@@ -104,9 +107,46 @@
 }
 
 #loginSignupChk:checked ~ .loginSignupLogin label {
-  transform: scale(1);
+  transform: scale(1) translateY(1rem);
 }
 
 #loginSignupChk:checked ~ .loginSignupSignup label {
   transform: scale(0.6);
+}
+
+/* Styling for the Login with Google button */
+/* Styling for the Login with Google button */
+.lgbtn {
+  display: flex;
+  align-items: center;
+  font-family: "Outfit";
+
+  justify-content: center;
+  gap: 10px; /* Adjust gap for spacing between icon and text */
+  background-color: #fff;
+  color: #757575;
+  font-size: 1rem;
+  font-weight: bold;
+  border: 1px solid #d9d9d9;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.lgbtn:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.lgbtn:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.LoginGoogle {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
 }

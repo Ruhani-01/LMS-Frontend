@@ -2,30 +2,31 @@ import React, { useEffect, useState } from "react";
 import "./Dash_Courses.css";
 import axios from "axios";
 
-
-
-// Placeholder data for courses
-
-
 const Dash_Courses = () => {
-
   const [courses, setCourses] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentCourse, setCurrentCourse] = useState(null);
-  const setCourse=async()=>{
-    const response=await axios.get(`http://localhost:3000/api/admin/dashCourses?auth=${localStorage.getItem("id")}`);
-    setCourses(response.data);
-  }
-  useEffect(()=>{setCourse()},[])
 
+  const setCourse = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/admin/dashCourses?auth=${localStorage.getItem("id")}`
+      );
+      setCourses(response.data);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
 
-  // Function to handle course editing
+  useEffect(() => {
+    setCourse();
+  }, []);
+
   const handleEditCourse = (course) => {
     setCurrentCourse(course);
     setModalOpen(true);
   };
 
-  // Function to handle course update
   const handleUpdateCourse = (updatedCourse) => {
     const updatedCourses = courses.map((course) =>
       course.id === updatedCourse.id ? updatedCourse : course
@@ -34,16 +35,21 @@ const Dash_Courses = () => {
     setModalOpen(false);
   };
 
-  // Function to handle adding a new course
   const handleAddCourse = (newCourse) => {
     setCourses([...courses, newCourse]);
     setModalOpen(false);
   };
 
-  // Function to handle course deletion
-  const handleDeleteCourse = async(courseId) => {
-      const response= await axios.delete(`http://localhost:3000/api/admin/course/${courseId}/delete`);
+  const handleDeleteCourse = async (courseId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/api/admin/course/${courseId}/delete`
+      );
       console.log(response);
+      setCourses(courses.filter((course) => course.id !== courseId));
+    } catch (error) {
+      console.error("Error deleting course:", error);
+    }
   };
 
   return (
@@ -68,7 +74,7 @@ const Dash_Courses = () => {
                   <td>{course.title}</td>
                   <td>{course.price}</td>
                   <td>{course.discountPrice}</td>
-                  <td>{course.students?course.students.length:0}</td>
+                  <td>{course.students ? course.students.length : 0}</td>
                   <td>
                     <img
                       src={course.img}
@@ -85,12 +91,12 @@ const Dash_Courses = () => {
                       onClick={() => handleEditCourse(course)}
                       className="edit-button"
                     >
-                      <span>✏️</span>
+                      ✏️
                     </button>
                   </td>
                   <td>
                     <button
-                      onClick={() => handleDeleteCourse(course._id)}
+                      onClick={() => handleDeleteCourse(course.id)}
                       className="delete-button"
                     >
                       🗑️
@@ -103,7 +109,7 @@ const Dash_Courses = () => {
           <button
             className="add-course-button"
             onClick={() => {
-              setCurrentCourse(null); // Clear currentCourse for new course addition
+              setCurrentCourse(null);
               setModalOpen(true);
             }}
           >
@@ -111,7 +117,6 @@ const Dash_Courses = () => {
           </button>
         </div>
 
-        {/* Modal for editing or adding course */}
         {modalOpen && (
           <CourseModal
             course={currentCourse}
@@ -132,23 +137,32 @@ const CourseModal = ({ course, onClose, onSave, onDelete }) => {
     discountPrice: course?.discountPrice || "",
     img: course?.img || "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const createnew=async()=>{
-      const response = axios.post(`http://localhost:3000/api/admin/create?auth=${localStorage.getItem("id")}`,formData);
-      console.log(response);
-      
-      console.log("Creating a new Course");
-  }
-  const editCourse = async (id) => {
-    console.log("Editing a Course");
+  const createNew = async () => {
     try {
-      const response = await axios.patch(`http://localhost:3000/api/admin/course/${id}/edit`, formData);
+      const response = await axios.post(
+        `http://localhost:3000/api/admin/create?auth=${localStorage.getItem("id")}`,
+        formData
+      );
+      console.log(response);
+    } catch (error) {
+      console.error("Error creating course:", error);
+    }
+  };
+
+  const editCourse = async (id) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:3000/api/admin/course/${id}/edit`,
+        formData
+      );
       console.log("Course updated:", response.data);
     } catch (error) {
       console.error("Error updating course:", error);
     }
   };
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -156,12 +170,43 @@ const CourseModal = ({ course, onClose, onSave, onDelete }) => {
       [name]: value,
     }));
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSave(formData);
+
+  const validateForm = () => {
+    const { title, price, discountPrice, img } = formData;
+
+    if (!title || !price || !discountPrice || !img) {
+      setErrorMessage("All fields are required.");
+      return false;
+    }
+
+    if (Number(price) < 0 || Number(discountPrice) < 0) {
+      setErrorMessage("Price and Discounted Price cannot be negative.");
+      return false;
+    }
+
+    if (Number(discountPrice) > Number(price)) {
+      setErrorMessage("Discounted Price cannot be more than the Price.");
+      return false;
+    }
+
+    setErrorMessage("");
+    return true;
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
+    if (!validateForm()) {
+      return;
+    }
+
+    if (course) {
+      editCourse(course.id);
+    } else {
+      createNew();
+    }
+    onSave(formData);
+  };
 
   return (
     <div className="modal">
@@ -181,21 +226,20 @@ const CourseModal = ({ course, onClose, onSave, onDelete }) => {
           />
           <input
             type="number"
-            name="discountPrice"
-            placeholder="Discounted Price"
-            value={formData.discountPrice}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="number"
             name="price"
             placeholder="Price"
             value={formData.price}
             onChange={handleChange}
             required
           />
-
+          <input
+            type="number"
+            name="discountPrice"
+            placeholder="Discounted Price"
+            value={formData.discountPrice}
+            onChange={handleChange}
+            required
+          />
           <input
             type="text"
             name="img"
@@ -204,18 +248,20 @@ const CourseModal = ({ course, onClose, onSave, onDelete }) => {
             onChange={handleChange}
             required
           />
-          <div className="image-preview">
-            {formData.previewImage && (
+          {formData.img && (
+            <div className="image-preview">
               <img
                 src={formData.img}
                 alt="Preview"
                 style={{ width: "100px", height: "100px", objectFit: "cover" }}
               />
-            )}
-          </div>
-          <button type="submit" className="save-button"onClick={course?()=>{editCourse(course._id)}:()=>{createnew()}}>
+            </div>
+          )}
+          {errorMessage && (
+            <p style={{ color: "red", fontWeight: "bold" }}>{errorMessage}</p>
+          )}
+          <button type="submit" className="save-button">
             {course ? "Save Changes" : "Add Course"}
-            
           </button>
           {course && (
             <button

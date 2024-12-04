@@ -18,7 +18,10 @@ import Students2 from "../assets/students2.png";
 import Schedule2 from "../assets/schedule2.png";
 import Liveclass2 from "../assets/liveclass2.png";
 import Chat2 from "../assets/chat2.png";
+
 function Dash_nav() {
+  const id = localStorage.getItem("id");
+
   return (
     <div className="dashboard-navbar2">
       <div className="dashboard-navbar-logo">
@@ -27,7 +30,7 @@ function Dash_nav() {
       </div>
       <div className="dashboard-navbar-links">
         <NavLink
-          to="Dashboard"
+          to={`/admin/${id}/dashboard`}
           className={({ isActive }) =>
             isActive
               ? "dashboard-navbar-navlink active"
@@ -46,7 +49,7 @@ function Dash_nav() {
           )}
         </NavLink>
         <NavLink
-          to="/admin/mycourses"
+          to={`/admin/${id}/mycourses`}
           className={({ isActive }) =>
             isActive
               ? "dashboard-navbar-navlink active"
@@ -61,7 +64,7 @@ function Dash_nav() {
           )}
         </NavLink>
         <NavLink
-          to="/admin/students"
+          to={`/admin/${id}/students`}
           className={({ isActive }) =>
             isActive
               ? "dashboard-navbar-navlink active"
@@ -76,7 +79,7 @@ function Dash_nav() {
           )}
         </NavLink>
         <NavLink
-          to="/admin/schedule"
+          to={`/admin/${id}/schedule`}
           className={({ isActive }) =>
             isActive
               ? "dashboard-navbar-navlink active"
@@ -91,7 +94,7 @@ function Dash_nav() {
           )}
         </NavLink>
         <NavLink
-          to="/admin/liveclass"
+          to={`/admin/${id}/liveclass`}
           className={({ isActive }) =>
             isActive
               ? "dashboard-navbar-navlink active"
@@ -100,13 +103,13 @@ function Dash_nav() {
         >
           {({ isActive }) => (
             <p className="dashboard-navbar-link">
-              <img src={isActive ? Liveclass2 : Liveclass} alt="" />
+              <img src={isActive ? Liveclass2 : Liveclass} alt="live class" />
               Live Class
             </p>
           )}
         </NavLink>
         <NavLink
-          to="/admin/chat"
+          to={`/admin/${id}/chat`}
           className={({ isActive }) =>
             isActive
               ? "dashboard-navbar-navlink active"
@@ -120,16 +123,23 @@ function Dash_nav() {
             </p>
           )}
         </NavLink>
-        <NavLink to="/admin/myaccount" className="dashboard-navbar-navlink">
+        <NavLink
+          to={`/admin/${id}/myaccount`}
+          className={({ isActive }) =>
+            isActive
+              ? "dashboard-navbar-navlink active"
+              : "dashboard-navbar-navlink"
+          }
+        >
           <p className="dashboard-navbar-link">
-            <img src={Myaccount} alt="myaccount" />
+            <img src={Myaccount} alt="my account" />
             My Account
           </p>
         </NavLink>
       </div>
       <div>
         <button className="navbar-button">
-          <img src={Logout} alt="logout" /> <p>Log Out</p>{" "}
+          <img src={Logout} alt="logout" /> <p>Log Out</p>
         </button>
       </div>
     </div>

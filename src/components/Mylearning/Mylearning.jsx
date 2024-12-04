@@ -10,7 +10,11 @@ export default function Mylearning() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/mylearning?auth=${localStorage.getItem("id")}`);
+        const response = await axios.get(
+          `http://localhost:3000/api/mylearning?auth=${localStorage.getItem(
+            "id"
+          )}`
+        );
         console.log(response);
         setCourses(response.data.mylearning || []); // Set as an empty array if no courses are returned
       } catch (error) {
@@ -26,12 +30,14 @@ export default function Mylearning() {
     <>
       <div className="mylearningcontainer">
         <h1 className="myLearning-header">My Learnings</h1>
-        {error && <p className="error-message">{error}</p>} {/* Display error if any */}
+        {error && <p className="error-message">{error}</p>}{" "}
+        {/* Display error if any */}
         <div>
           {courses.length > 0 ? (
             courses.map((course, index) => (
               <CourseCard
                 key={index}
+                id={course._id}
                 image={course.img}
                 courseName={course.title}
               />
