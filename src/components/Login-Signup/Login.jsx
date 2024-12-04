@@ -3,6 +3,7 @@ import "./Login.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { FcGoogle } from "react-icons/fc";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -105,6 +106,10 @@ export default function Login() {
     }
   };
 
+  const LoginWithGoogle = () => {
+    window.open("http://localhost:3000/api/auth/logingoogle");
+  };
+
   return (
     <>
       <div className="loginSignupMain">
@@ -184,6 +189,12 @@ export default function Login() {
               Login
             </button>
           </form>
+          <div className="LoginGoogle">
+            <button className="lgbtn" onClick={LoginWithGoogle}>
+              <FcGoogle size={20} />
+              Login with Google
+            </button>
+          </div>
         </div>
       </div>
       <ToastContainer

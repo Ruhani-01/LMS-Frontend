@@ -14,6 +14,7 @@ import {
   Route,
 } from "react-router-dom";
 import Upcoming from "./components/upcomingClasses/Upcoming.jsx";
+import Success from "./components/Login-Signup/success.jsx";
 
 function App() {
   const router = createBrowserRouter(
@@ -23,23 +24,20 @@ function App() {
           <Route path="/" element={<Landingpage />} />
           <Route path="/all-courses" element={<Courses />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/googlesuccess" element={<Success />} />
           <Route path="/signup" element={<Login />} />
           <Route path="/Course/:id" element={<ViewCourse />} />
           <Route path="/my-learnings" element={<Mylearning />} />
           <Route path="/plans" element={<PlanPricing />} />
           <Route path="/start/:id" element={<Upcoming />} />
-          
         </Route>
 
-        
         {Dashboard_full()}
       </>
     )
   );
 
-  return (
-    <RouterProvider router={router} />
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

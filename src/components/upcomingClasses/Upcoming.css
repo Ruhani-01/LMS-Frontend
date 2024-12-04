@@ -1,137 +1,234 @@
-/* Popup overlay */
+/* General Styles */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #fdecc6;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Button to View Classes */
+.view-classes-btn {
+  display: block;
+  margin: 30px auto;
+  padding: 12px 28px;
+  background-color: #f9c365;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.view-classes-btn:hover {
+  background-color: #ffa200;
+  transform: translateY(-3px);
+}
+
+/* Popup Overlay */
 .popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
 }
 
-/* Popup container */
+/* Popup Container */
 .popup-container {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 500px;
+  background: linear-gradient(135deg, #fdecc6, #f9c365);
   width: 90%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Heading of Popup */
-.popup-heading {
-  font-size: 24px;
-  font-weight: bold;
-  color: #f9c365; /* Theme color */
-  margin-bottom: 20px;
-}
-
-/* List of classes inside popup */
-.popup-classes-list {
+  max-width: 900px;
+  padding: 20px;
+  border-radius: 15px;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
-.popup-class-container {
-  background-color: #fdecc6; /* Light background */
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* Popup Heading */
+.popup-heading {
+  font-size: 26px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #f9c365;
+  padding-bottom: 10px;
+}
+
+/* Navigation Buttons */
+.navigation-buttons {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 15px 0;
 }
 
-.popup-course-name {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-}
-
-.popup-class-details {
-  color: #555;
-  font-size: 14px;
-}
-
-.popup-join-button {
-  background-color: #f9c365; /* Theme color */
-  color: #333;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.popup-join-button:hover {
-  background-color: #f8a700; /* Slightly darker shade */
-}
-
-/* Close Button Styling */
-.popup-close-btn {
-  background-color: #ff4e4e;
+.navigation-buttons button {
+  background-color: #f9c365;
   color: white;
-  padding: 8px 15px;
-  border-radius: 5px;
+  padding: 10px 15px;
   border: none;
-  margin-top: 20px;
+  border-radius: 20px;
+  font-size: 14px;
   cursor: pointer;
   font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.navigation-buttons button:hover {
+  background-color: #ffa200;
+  transform: translateY(-3px);
+}
+
+/* Calendar */
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.react-calendar {
+  width: 80%;
+  max-width: 500px;
+  border: none;
+  padding: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: "Arial", sans-serif;
+}
+
+.react-calendar__tile {
+  height: 3rem;
+  /* width: 3rem; */
+  padding: 0;
+  /* border-radius: 40%; */
+  border-radius: 30px !important;
+
+  margin-bottom: 10px !important;
+  /* margin-right: 2px !important; */
+}
+
+.react-calendar__tile--now {
+  background: #ffe4a3;
+  color: #333;
+}
+
+.react-calendar__tile--active {
+  background: #f9c365;
+  color: #fff;
+}
+
+/* Highlighted Date */
+.highlighted-date {
+  background-color: #ffa200;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+}
+
+/* Class Cards */
+.class-card {
+  background: #fff;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.class-card h3 {
+  font-size: 20px;
+  color: #f9c365;
+  margin-bottom: 8px;
+}
+
+.class-card p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.join-button {
+  align-self: end;
+  background-color: #f9c365;
+  color: white;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.join-button:hover {
+  background-color: #ffa200;
+}
+
+/* Close Button */
+.popup-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #f9c365;
+  color: white;
+  font-size: 14px;
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .popup-close-btn:hover {
-  background-color: #f95353;
+  background-color: #ffa200;
 }
 
-/* Button to open the popup */
-.view-classes-btn {
-  background-color: #f9c365;
-  color: #333;
-  padding: 12px 25px;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.view-classes-btn:hover {
-  background-color: #f8a700;
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .popup-container {
-    width: 95%;
     padding: 15px;
   }
 
-  .popup-classes-list {
-    gap: 10px;
+  .popup-heading {
+    font-size: 22px;
   }
 
-  .view-classes-btn {
-    width: 100%;
-    padding: 10px;
+  .navigation-buttons button {
+    padding: 8px 12px;
+    font-size: 12px;
   }
 }
