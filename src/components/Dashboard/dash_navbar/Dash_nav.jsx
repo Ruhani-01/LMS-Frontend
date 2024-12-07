@@ -124,7 +124,7 @@ function Dash_nav() {
           )}
         </NavLink>
         <NavLink
-          to={`/admin/${id}/myaccount`}
+          to={`/admin/${id}/notify`}
           className={({ isActive }) =>
             isActive
               ? "dashboard-navbar-navlink active"
@@ -132,8 +132,8 @@ function Dash_nav() {
           }
         >
           <p className="dashboard-navbar-link">
-            <img src={Myaccount} alt="my account" />
-            My Account
+            <img src={Notify} alt="my account" />
+            Notify
           </p>
         </NavLink>
       </div>

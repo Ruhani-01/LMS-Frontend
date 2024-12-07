@@ -50,7 +50,7 @@ const PlanPricing = () => {
               console.log(savePaymentData);
 
               if (savePaymentData.status == 200) {
-                window.location.href = `http://localhost:3001/admin/${id}`;
+                window.location.href = `http://localhost:3001/admin/${id}/dashboard`;
               }
             } catch (error) {
               console.log(error);

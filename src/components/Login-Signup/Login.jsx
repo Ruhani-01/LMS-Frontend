@@ -76,12 +76,10 @@ export default function Login() {
         },
         { withCredentials: true } // Ensure cookies are included
       );
-      const teacher = response.data.user.isTeacher;
-      console.log(response);
+    
 
       if (response.data.statusCode === 400) {
         const message = response.data.message;
-        console.log(message);
         toast.error(message);
       } else {
         toast.success("Welcome To LearnLynx");
@@ -107,7 +105,7 @@ export default function Login() {
   };
 
   const LoginWithGoogle = () => {
-    window.open("http://localhost:3000/api/auth/logingoogle");
+    window.location.href = "http://localhost:3000/api/auth/logingoogle";
   };
 
   return (
