@@ -53,6 +53,7 @@ export default function ViewCourse() {
 
               if (savePaymentData.status == 200) {
                 navigate("/my-learnings");
+                window.location.reload();
               } else {
                 toast.error("Payment Verification Failed!");
               }

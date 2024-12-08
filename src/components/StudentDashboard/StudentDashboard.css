@@ -1,0 +1,91 @@
+/* Overall Dashboard Styling */
+.dashboard {
+  font-family: "Arial", sans-serif;
+  color: #333;
+  background-color: #f5f5f5;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+/* Navbar Styling */
+.navbar {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.navbar-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.navbar-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.tab-button {
+  background-color: transparent;
+  border: 1px solid #ddd;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.tab-button:hover {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  border-color: #bbb;
+}
+
+.tab-button.active {
+  background-color: #f0f0f0;
+  border-color: #999;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  font-weight: bold;
+}
+
+/* Header Section */
+.dashboard-header {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: bold;
+  color: #444;
+}
+
+.dashboard-header p {
+  font-size: 16px;
+  color: #666;
+}
+
+/* Content Section */
+.dashboard-content {
+  width: 100%;
+  max-width: 800px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.dashboard-content p {
+  font-size: 16px;
+  color: #555;
+}

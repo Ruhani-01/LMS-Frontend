@@ -13,8 +13,8 @@ import {
   RouterProvider,
   Route,
 } from "react-router-dom";
-import Upcoming from "./components/upcomingClasses/Upcoming.jsx";
 import Success from "./components/Login-Signup/success.jsx";
+import StudentDashboard from "./components/StudentDashboard/StudentDashboard.jsx";
 
 function App() {
   const router = createBrowserRouter(
@@ -29,7 +29,7 @@ function App() {
           <Route path="/Course/:id" element={<ViewCourse />} />
           <Route path="/my-learnings" element={<Mylearning />} />
           <Route path="/plans" element={<PlanPricing />} />
-          <Route path="/start/:id" element={<Upcoming />} />
+          <Route path="/start/:id" element={<StudentDashboard />} />
         </Route>
 
         {Dashboard_full()}
