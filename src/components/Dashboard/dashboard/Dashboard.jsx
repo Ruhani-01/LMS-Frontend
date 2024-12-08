@@ -1,112 +1,207 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./dashboard.css";
+import { Line, Bar, Doughnut } from "react-chartjs-2";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  ArcElement,
+  Title,
   Tooltip,
   Legend,
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-} from "recharts";
+} from "chart.js";
+
+// Register necessary Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Dashboard = () => {
-  // Sample data
-  const timelineData = [
-    { month: "Jan", students: 120 },
-    { month: "Feb", students: 150 },
-    { month: "Mar", students: 180 },
-    { month: "Apr", students: 200 },
-    { month: "May", students: 240 },
-  ];
+  const [dashboardData, setDashboardData] = useState({
+    totalStudents: 0,
+    totalCourses: 0,
+    totalClasses: 0,
+    classData: [],
+    courseData: [],
+  });
 
-  const barData = [
-    { category: "Math", students: 120 },
-    { category: "Science", students: 80 },
-    { category: "Arts", students: 50 },
-    { category: "Commerce", students: 100 },
-    { category: "Sports", students: 60 },
-  ];
+  // Fetch data when component mounts
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const teacherId = localStorage.getItem("id"); // Fetch teacher ID from localStorage
+        const response = await axios.post("/api/admin/dashboardreq", {
+          teacherId,
+        });
+        setDashboardData(response.data);
 
+        // Fetch course data with the new API request
+        const courseResponse = await axios.get(
+          `http://localhost:3000/api/admin/dashCourses?auth=${localStorage.getItem(
+            "id"
+          )}`
+        );
+        const courseData = courseResponse.data;
+        // console.log(courseData);
+        // Map course data to include student count
+        const updatedCourseData = courseData.map((course) => ({
+          ...course,
+          studentCount: course.students ? course.students.length : 0,
+        }));
+
+        setDashboardData((prevData) => ({
+          ...prevData,
+          courseData: updatedCourseData,
+        }));
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  // Timeline chart data for student count
+  const timelineData = {
+    labels: dashboardData.classData.map((cls) =>
+      new Date(cls.date).toLocaleDateString()
+    ),
+    datasets: [
+      {
+        label: "Students",
+        data: dashboardData.classData.map(() => dashboardData.totalStudents),
+        borderColor: "#f9c365",
+        backgroundColor: "rgba(249, 195, 101, 0.2)",
+        pointBackgroundColor: "#f9c365",
+        tension: 0.4,
+      },
+    ],
+  };
+
+  // Bar chart data for courses by students count
+  const courseStudentData = {
+    labels: dashboardData.courseData.map((course) => course.title),
+    datasets: [
+      {
+        label: "Students per Course",
+        data: dashboardData.courseData.map((course) => course.studentCount),
+        backgroundColor: "#f9c365",
+        hoverBackgroundColor: "#f6a13c",
+        borderRadius: 8,
+      },
+    ],
+  };
+
+  // Doughnut chart data for stats
   const stats = [
-    { label: "Total Earnings", value: "₹50,000", target: "₹100,000" },
-    { label: "Total Students", value: "5,000", target: "10,000" },
-    { label: "Total Courses", value: "35", target: "50" },
-    { label: "Total Scheduled Classes", value: "220", target: "500" },
+    {
+      label: "Total Students",
+      value: dashboardData.totalStudents,
+      target: 100,
+    },
+    { label: "Total Courses", value: dashboardData.totalCourses, target: 20 },
+    {
+      label: "Total Scheduled Classes",
+      value: dashboardData.totalClasses,
+      target: 10,
+    },
   ];
 
-  const colors = ["#fdecc6", "#f9c365", "#ff9b6b", "#ff6f61"];
+  const colors = ["#fdecc6", "#f9c365", "#ff9b6b"];
 
   return (
     <div className="dashboard-container">
       <div className="bento-grid">
-        {/* Timeline Chart */}
-        <div className="chart-box animated-pop">
+        {/* Timeline Chart: Student Count */}
+        {/* <div className="chart-box animated-pop">
           <h4>Timeline Chart: Student Count</h4>
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={timelineData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="students" stroke="#f9c365" />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+          <Line
+            data={timelineData}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  onClick: null, // Disable legend click
+                },
+              },
+              scales: {
+                x: { title: { display: true, text: "Month" } },
+                y: { title: { display: true, text: "Number of Students" } },
+              },
+            }}
+          />
+        </div> */}
 
-        {/* Bar Chart */}
+        {/* Bar Chart: Students per Course */}
         <div className="chart-box animated-pop">
-          <h4>Bar Chart: Course Categories</h4>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={barData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="category" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="students" fill="#fdecc6" />
-            </BarChart>
-          </ResponsiveContainer>
+          <h4>Students per Course</h4>
+          <Bar
+            data={courseStudentData}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  onClick: null, // Disable legend click
+                },
+              },
+              scales: {
+                x: { title: { display: true, text: "Courses" } },
+                y: { title: { display: true, text: "Number of Students" } },
+              },
+            }}
+          />
         </div>
 
-        {/* Doughnut Charts */}
+        {/* Doughnut Charts for Stats */}
         {stats.map((stat, index) => {
-          const currentValue = parseInt(stat.value.replace(/\D/g, "")) || 0;
-          const targetValue = parseInt(stat.target.replace(/\D/g, "")) || 0;
-          const percentage = (currentValue / targetValue) * 100;
+          const percentage = ((stat.value / stat.target) * 100).toFixed(1);
+
+          const doughnutData = {
+            labels: ["Achieved", "Remaining"],
+            datasets: [
+              {
+                data: [stat.value, stat.target - stat.value],
+                backgroundColor: [colors[index % colors.length], "#e0e0e0"],
+                hoverBackgroundColor: [
+                  colors[index % colors.length],
+                  "#d6d6d6",
+                ],
+              },
+            ],
+          };
 
           return (
             <div key={index} className="doughnut-chart-box animated-pop">
               <h4>{stat.label}</h4>
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={[
-                      { name: "Achieved", value: currentValue },
-                      { name: "Remaining", value: targetValue - currentValue },
-                    ]}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    fill={colors[index % colors.length]}
-                    dataKey="value"
-                  >
-                    <Cell fill={colors[index % colors.length]} />
-                    <Cell fill="#e0e0e0" />
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+              <Doughnut
+                data={doughnutData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      onClick: null, // Disable legend click
+                    },
+                  },
+                }}
+              />
               <p className="doughnut-value">
-                {stat.value} / {stat.target} ({percentage.toFixed(1)}%)
+                {stat.value.toLocaleString()} / {stat.target.toLocaleString()} (
+                {percentage}%)
               </p>
             </div>
           );
@@ -118,120 +213,210 @@ const Dashboard = () => {
 
 export default Dashboard;
 
-// import React from "react";
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
 // import "./dashboard.css";
+// import { Line, Bar, Doughnut } from "react-chartjs-2";
 // import {
-//   LineChart,
-//   Line,
-//   XAxis,
-//   YAxis,
-//   CartesianGrid,
+//   Chart as ChartJS,
+//   CategoryScale,
+//   LinearScale,
+//   PointElement,
+//   LineElement,
+//   BarElement,
+//   ArcElement,
+//   Title,
 //   Tooltip,
 //   Legend,
-//   BarChart,
-//   Bar,
-//   ResponsiveContainer,
-// } from "recharts";
+// } from "chart.js";
+
+// // Register necessary Chart.js components
+// ChartJS.register(
+//   CategoryScale,
+//   LinearScale,
+//   PointElement,
+//   LineElement,
+//   BarElement,
+//   ArcElement,
+//   Title,
+//   Tooltip,
+//   Legend
+// );
 
 // const Dashboard = () => {
-//   // Sample data for charts
-//   const timelineData = [
-//     { month: "Jan", students: 120 },
-//     { month: "Feb", students: 150 },
-//     { month: "Mar", students: 180 },
-//     { month: "Apr", students: 200 },
-//     { month: "May", students: 240 },
-//   ];
+//   const [dashboardData, setDashboardData] = useState({
+//     totalStudents: 0,
+//     totalCourses: 0,
+//     totalClasses: 0,
+//     classData: [],
+//     courseData: [],
+//   });
 
-//   const barData = [
-//     { category: "Math", students: 120 },
-//     { category: "Science", students: 80 },
-//     { category: "Arts", students: 50 },
-//     { category: "Commerce", students: 100 },
-//     { category: "Sports", students: 60 },
-//   ];
+//   // Fetch data when component mounts
+//   useEffect(() => {
+//     const fetchDashboardData = async () => {
+//       try {
+//         const teacherId = localStorage.getItem("id"); // Fetch teacher ID from localStorage
+//         const response = await axios.post("/api/admin/dashboardreq", {
+//           teacherId,
+//         });
+//         setDashboardData(response.data);
 
-//   // Summary data
+//         // Fetch course data with the new API request
+//         const courseResponse = await axios.get(
+//           `http://localhost:3000/api/admin/dashCourses?auth=${localStorage.getItem(
+//             "id"
+//           )}`
+//         );
+//         const courseData = courseResponse.data;
+//         setDashboardData((prevData) => ({
+//           ...prevData,
+//           courseData,
+//         }));
+//       } catch (error) {
+//         console.error("Error fetching dashboard data:", error);
+//       }
+//     };
+
+//     fetchDashboardData();
+//   }, []);
+
+//   // Timeline chart data for student count
+//   const timelineData = {
+//     labels: dashboardData.classData.map((cls) =>
+//       new Date(cls.date).toLocaleDateString()
+//     ),
+//     datasets: [
+//       {
+//         label: "Students",
+//         data: dashboardData.classData.map(() => dashboardData.totalStudents),
+//         borderColor: "#f9c365",
+//         backgroundColor: "rgba(249, 195, 101, 0.2)",
+//         pointBackgroundColor: "#f9c365",
+//         tension: 0.4,
+//       },
+//     ],
+//   };
+
+//   // Bar chart data for courses by students count
+//   const courseStudentData = {
+//     labels: dashboardData.courseData.map((course) => course.name),
+//     datasets: [
+//       {
+//         label: "Students per Course",
+//         data: dashboardData.courseData.map((course) => course.studentCount),
+//         backgroundColor: "#f9c365",
+//         hoverBackgroundColor: "#f6a13c",
+//         borderRadius: 8,
+//       },
+//     ],
+//   };
+
+//   // Doughnut chart data for stats
 //   const stats = [
-//     { label: "Total Earnings", value: "$50,000" },
-//     { label: "Total Students", value: "1,200" },
-//     { label: "Total Courses", value: "35" },
-//     { label: "Total Scheduled Classes", value: "220" },
+//     {
+//       label: "Total Students",
+//       value: dashboardData.totalStudents,
+//       target: 10000,
+//     },
+//     { label: "Total Courses", value: dashboardData.totalCourses, target: 50 },
+//     {
+//       label: "Total Scheduled Classes",
+//       value: dashboardData.totalClasses,
+//       target: 500,
+//     },
 //   ];
+
+//   const colors = ["#fdecc6", "#f9c365", "#ff9b6b"];
 
 //   return (
 //     <div className="dashboard-container">
-//       {/* Stats Boxes */}
-//       <div className="stats-grid">
-//         {stats.map((stat, index) => (
-//           <div key={index} className="stat-box">
-//             <h3>{stat.label}</h3>
-//             <p>{stat.value}</p>
-//           </div>
-//         ))}
-//       </div>
-
-//       {/* Graphs Section */}
-//       <div className="graphs-grid">
-//         <div className="graph-box">
+//       <div className="bento-grid">
+//         {/* Timeline Chart: Student Count */}
+//         <div className="chart-box animated-pop">
 //           <h4>Timeline Chart: Student Count</h4>
-//           <ResponsiveContainer width="100%" height="100%">
-//             <LineChart data={timelineData}>
-//               <CartesianGrid strokeDasharray="3 3" />
-//               <XAxis dataKey="month" />
-//               <YAxis />
-//               <Tooltip />
-//               <Legend />
-//               <Line type="monotone" dataKey="students" stroke="#f9c365" />
-//             </LineChart>
-//           </ResponsiveContainer>
+//           <Line
+//             data={timelineData}
+//             options={{
+//               responsive: true,
+//               maintainAspectRatio: false,
+//               plugins: {
+//                 legend: {
+//                   onClick: null, // Disable legend click
+//                 },
+//               },
+//               scales: {
+//                 x: { title: { display: true, text: "Month" } },
+//                 y: { title: { display: true, text: "Number of Students" } },
+//               },
+//             }}
+//           />
 //         </div>
-//         <div className="graph-box">
-//           <h4>Bar Chart: Course Categories</h4>
-//           <ResponsiveContainer width="100%" height="100%">
-//             <BarChart data={barData}>
-//               <CartesianGrid strokeDasharray="3 3" />
-//               <XAxis dataKey="category" />
-//               <YAxis />
-//               <Tooltip />
-//               <Legend />
-//               <Bar dataKey="students" fill="#fdecc6" />
-//             </BarChart>
-//           </ResponsiveContainer>
+
+//         {/* Bar Chart: Students per Course */}
+//         <div className="chart-box animated-pop">
+//           <h4>Bar Chart: Students per Course</h4>
+//           <Bar
+//             data={courseStudentData}
+//             options={{
+//               responsive: true,
+//               maintainAspectRatio: false,
+//               plugins: {
+//                 legend: {
+//                   onClick: null, // Disable legend click
+//                 },
+//               },
+//               scales: {
+//                 x: { title: { display: true, text: "Courses" } },
+//                 y: { title: { display: true, text: "Number of Students" } },
+//               },
+//             }}
+//           />
 //         </div>
+
+//         {/* Doughnut Charts for Stats */}
+//         {stats.map((stat, index) => {
+//           const percentage = ((stat.value / stat.target) * 100).toFixed(1);
+
+//           const doughnutData = {
+//             labels: ["Achieved", "Remaining"],
+//             datasets: [
+//               {
+//                 data: [stat.value, stat.target - stat.value],
+//                 backgroundColor: [colors[index % colors.length], "#e0e0e0"],
+//                 hoverBackgroundColor: [
+//                   colors[index % colors.length],
+//                   "#d6d6d6",
+//                 ],
+//               },
+//             ],
+//           };
+
+//           return (
+//             <div key={index} className="doughnut-chart-box animated-pop">
+//               <h4>{stat.label}</h4>
+//               <Doughnut
+//                 data={doughnutData}
+//                 options={{
+//                   responsive: true,
+//                   maintainAspectRatio: false,
+//                   plugins: {
+//                     legend: {
+//                       onClick: null, // Disable legend click
+//                     },
+//                   },
+//                 }}
+//               />
+//               <p className="doughnut-value">
+//                 {stat.value.toLocaleString()} / {stat.target.toLocaleString()} (
+//                 {percentage}%)
+//               </p>
+//             </div>
+//           );
+//         })}
 //       </div>
 //     </div>
 //   );
 // };
-
-// export default Dashboard;
-
-// import React from 'react';
-// import './dashboard.css';
-
-// function Dashboard() {
-//   return (
-//     <div className="container">
-//       <div className="left-panel">
-
-//         <div className="box-group">
-//           <div className="box box-small"></div>
-//           <div className="box box-small"></div>
-//         </div>
-
-//         <div className="box-group">
-//           <div className="box box-small"></div>
-//           <div className="box box-small"></div>
-//         </div>
-
-//         <div className="box box-large"></div>
-//       </div>
-//       <div className="right-panel">
-//         <div className="box box-half"></div>
-//         <div className="box box-half"></div>
-//       </div>
-//     </div>
-//   );
-// }
 
 // export default Dashboard;
