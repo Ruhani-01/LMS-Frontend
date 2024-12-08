@@ -150,3 +150,275 @@
   justify-content: center;
   margin-top: 15px;
 }
+
+/* Forgot */
+
+/* Global Styles for Modal Overlay */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  animation: fadeIn 0.3s forwards;
+}
+
+.modalOverlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal Content Box */
+.modalContent {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modalContent h3 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #333;
+  font-family: "Arial", sans-serif;
+  text-align: center;
+}
+
+/* Input Fields */
+.modalContent input {
+  width: 93%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.modalContent input:focus {
+  border-color: #f9c365;
+  outline: none;
+}
+
+/* Buttons */
+.modalContent button {
+  width: 100%;
+  padding: 12px;
+  background-color: #f9c365;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modalContent button:hover {
+  background-color: #f49b26;
+}
+
+.modalContent .closeBtn {
+  background-color: #e6e6e6;
+  color: #333;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.modalContent .closeBtn:hover {
+  background-color: #ccc;
+}
+
+/* Forgot Password Step Transitions */
+.modalContent .stepTitle {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #555;
+  text-align: center;
+}
+
+.modalContent .stepDescription {
+  font-size: 14px;
+  margin-bottom: 25px;
+  color: #777;
+  text-align: center;
+}
+
+/* Forgot Password Buttons */
+
+.forgotBTN {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.forgotPasswordBtn {
+  color: #ffb83d;
+  background-color: transparent;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+
+  text-decoration: underline;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.forgotPasswordBtn:hover {
+  color: #f49b26;
+}
+
+/* Smooth Transition for Modal Changes */
+.modalOverlay,
+.modalContent {
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Optional animations for step changes */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.step {
+  animation: fadeOut 0.2s forwards;
+}
+
+/* Optional Enhancement: Progress Bar (Optional for Steps) */
+.progressBarContainer {
+  width: 100%;
+  background-color: #ddd;
+  height: 8px;
+  border-radius: 4px;
+  margin-top: 15px;
+}
+
+.progressBar {
+  height: 100%;
+  background-color: #f9c365;
+  width: 33%; /* Adjust width based on the current step */
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progressBar.step2 {
+  width: 66%;
+}
+
+.progressBar.step3 {
+  width: 100%;
+}
+
+/*  */
+
+/* Modal Container */
+.otp-modal {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 350px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Heading Style */
+.otp-modal h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* OTP Input Fields */
+.otp-inputs {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.otp-input {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.otp-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.2);
+}
+
+.otp-input::placeholder {
+  color: #aaa;
+}
+
+/* Button Style */
+.otp-btn {
+  background-color: #007bff;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.otp-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.otp-btn:active {
+  background-color: #004085;
+}
+
+/* Optional: Add spacing at the bottom */
+.otp-modal .otp-btn {
+  margin-top: 20px;
+}

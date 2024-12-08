@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./Dash_Notify.css";
 
 function Dash_Notify() {
   const [courses, setCourses] = useState([]);
   const [formData, setFormData] = useState({
     course: "",
-    title: "", // Title text field
-    notice: "", // Notice text field
+    title: "",
+    notice: "",
   });
   const [message, setMessage] = useState("");
 
@@ -37,36 +38,19 @@ function Dash_Notify() {
     e.preventDefault();
     const { course, title, notice } = formData;
 
-    // Validate form data
-    if (!course) {
-      setMessage("Please select a course.");
+    if (!course || !title || !notice) {
+      setMessage("Please fill out all fields.");
       return;
     }
 
-    if (!title) {
-      setMessage("Please enter a title for the notice.");
-      return;
-    }
-
-    if (!notice) {
-      setMessage("Please enter a notice message.");
-      return;
-    }
-
-    // Post notice to the selected course
     axios
-      .post(
-        `http://localhost:3000/api/postNotice?course=${course}`,
-        { title, notice }
-      )
+      .post(`http://localhost:3000/api/postNotice?course=${course}`, {
+        title,
+        notice,
+      })
       .then((response) => {
-        console.log(response);
         setMessage(response.data);
-        setFormData({
-          course: "",
-          title: "",
-          notice: "",
-        });
+        setFormData({ course: "", title: "", notice: "" });
       })
       .catch((error) => {
         console.error("Error posting notice:", error);
@@ -78,7 +62,6 @@ function Dash_Notify() {
     <div className="post-notice-container">
       <h1>Post Notice to Students</h1>
       <form className="post-notice-form" onSubmit={handleSubmit}>
-        {/* Course Dropdown */}
         <div className="form-group">
           <label htmlFor="course">Select Course</label>
           <select
@@ -99,7 +82,6 @@ function Dash_Notify() {
           </select>
         </div>
 
-        {/* Title of Notice Field */}
         <div className="form-group">
           <label htmlFor="title">Title of Notice</label>
           <input
@@ -113,7 +95,6 @@ function Dash_Notify() {
           />
         </div>
 
-        {/* Notice Text Area */}
         <div className="form-group">
           <label htmlFor="notice">Notice</label>
           <textarea
@@ -123,18 +104,20 @@ function Dash_Notify() {
             onChange={handleChange}
             required
             placeholder="Enter your notice here"
-            rows={10}
-          ></textarea>
+            rows="6"
+          />
         </div>
 
-        {/* Submit Button */}
         <button type="submit" className="submit-button">
           Post Notice
         </button>
       </form>
 
-      {/* Message Display */}
-      {message && <p className="message">{message}</p>}
+      {message && (
+        <p className={`message ${message.includes("Failed") ? "error" : ""}`}>
+          {message}
+        </p>
+      )}
     </div>
   );
 }

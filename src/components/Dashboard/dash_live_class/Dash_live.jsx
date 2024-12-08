@@ -42,8 +42,6 @@ function Dash_live() {
     fetchLiveClasses();
   }, []);
 
- 
-
   const startMeetingHandler = (roomCode) => {
     setCurrentRoomCode(roomCode);
 
@@ -119,14 +117,12 @@ function Dash_live() {
                 X
               </button>
             </div>
-            <div
-              id="zego-cloud-container"
-              className="zego-video-container"
-            ></div>
-            <div className="modal-footer">
-              <button className="start-meeting-btn" onClick={joinRoom}>
-                Join Meeting
-              </button>
+            <div id="zego-cloud-container" className="zego-video-container">
+              <div className="modal-footer">
+                <button className="start-meeting-btn" onClick={joinRoom}>
+                  Join Meeting
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -136,4 +132,3 @@ function Dash_live() {
 }
 
 export default Dash_live;
-

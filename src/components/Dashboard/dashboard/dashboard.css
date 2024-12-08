@@ -11,13 +11,14 @@
 
 body {
   margin: 0;
-  font-family: "Roboto", Arial, sans-serif;
   background: var(--background-color);
   color: var(--text-color);
 }
 
 .dashboard-container {
+  font-family: "Outfit";
   padding: 20px;
+  margin-top: -1rem !important;
   max-width: 1200px;
   margin: 0 auto;
   /* transform: translateY(-5rem); */

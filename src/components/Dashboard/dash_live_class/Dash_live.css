@@ -8,7 +8,7 @@
   max-width: 950px;
   margin: 40px auto;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  font-family: "Arial", sans-serif;
+  font-family: "Outfit", sans-serif;
   overflow: hidden;
   transition: all 0.3s ease-in-out;
 }
@@ -123,8 +123,8 @@
 
 .modal-content {
   background-color: #ffffff;
-  width: 90%;
-  max-width: 800px;
+  width: 60rem !important;
+  /* max-width: 800px; */
   height: 70vh;
   padding: 20px;
   border-radius: 12px;
@@ -164,8 +164,13 @@
 }
 
 .close-button {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: #666;
+  border: 2px solid black;
+  border-radius: 20px;
+  /* padding: 5px; */
+  height: 30px;
+  width: 30px;
   background: none;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
@@ -190,6 +195,8 @@
   display: flex;
   justify-content: center;
   margin-top: 15px;
+  position: relative;
+  align-items: center;
 }
 
 .start-meeting-btn {
@@ -199,7 +206,10 @@
   border-radius: 25px;
   font-size: 1.1rem;
   font-weight: 600;
+  top: 12rem;
+  position: absolute;
   transition: all 0.3s ease-in-out;
+  border: none;
 }
 
 .start-meeting-btn:hover {
