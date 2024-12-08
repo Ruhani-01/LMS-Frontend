@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Login.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,6 +26,7 @@ export default function Login() {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const[backOtp,setBackOtp]=useState("");
 
   // Handle Login Form Change
   const handleLoginChange = (e) => {
@@ -126,17 +127,24 @@ export default function Login() {
     setConfirmNewPassword("");
   };
 
-  const handleNextStep = () => {
-    if (forgotPasswordStep === 1 && email) {
+  const handleNextStep = async() => {
+    
+    if (forgotPasswordStep === 1) {
+      const response = await axios.post("http://localhost:3000/api/verifyEmail",{email});
+      setBackOtp(response.data);
       setForgotPasswordStep(2);
-    } else if (forgotPasswordStep === 2 && otp) {
+    } else if (forgotPasswordStep === 2 && backOtp==otp) {
       setForgotPasswordStep(3);
     }
   };
 
-  const handleResetPassword = () => {
+
+
+  const handleResetPassword = async() => {
     if (newPassword === confirmNewPassword) {
-      toast.success("Password reset successfully!");
+      const response = await axios.post("http://localhost:3000/api/resetPassword",{email,newPassword});
+      console.log(response);
+      // toast.success("Password reset successfully!");
       closeForgotPassword();
     } else {
       toast.error("Passwords do not match.");
@@ -147,13 +155,7 @@ export default function Login() {
     window.location.href = "http://localhost:3000/api/auth/logingoogle";
   };
 
-  // const handleOtpChange = (e, index) => {
-  //   const newOtp = [...otp];
-  //   newOtp[index] = e.target.value;
-  //   setOtp(newOtp.join(""));
-  // };
 
-  // otp
   // Create a ref to hold references to OTP input fields
   const otpRefs = useRef([]);
 
