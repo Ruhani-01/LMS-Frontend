@@ -1,7 +1,8 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink ,useNavigate} from "react-router-dom";
 import "./Dash_nav.css";
 import Logo from "../assets/logo.png";
+import { toast, ToastContainer} from "react-toastify";
 
 // React Icons
 import {
@@ -16,7 +17,42 @@ import {
 } from "react-icons/fa";
 
 function Dash_nav() {
+  const navigate = useNavigate();
   const id = localStorage.getItem("id");
+  const handleLogout = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("http://localhost:3000/api/logout", {
+        method: "GET",
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Logout request failed");
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+
+        
+        localStorage.removeItem("token");
+        localStorage.removeItem("Teacher");
+        localStorage.removeItem("id");
+        toast.success("Successfully logged out");
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else {
+        toast.error(data.message || "Logout failed");
+      }
+    } catch (error) {
+      toast.error("An error occurred during logout");
+      console.error("Logout error:", error);
+    }
+  };
+
 
   return (
     <div className="dashboard-navbar2">
@@ -118,7 +154,7 @@ function Dash_nav() {
         </NavLink>
       </div>
       <div>
-        <button className="navbar-button">
+        <button className="navbar-button" onClick={handleLogout}>
           <FaSignOutAlt className="dashboard-icon" />
           <p>Log Out</p>
         </button>

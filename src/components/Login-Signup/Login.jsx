@@ -143,7 +143,6 @@ export default function Login() {
   const handleResetPassword = async() => {
     if (newPassword === confirmNewPassword) {
       const response = await axios.post("http://localhost:3000/api/resetPassword",{email,newPassword});
-      console.log(response);
       // toast.success("Password reset successfully!");
       closeForgotPassword();
     } else {
