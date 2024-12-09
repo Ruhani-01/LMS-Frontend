@@ -24,7 +24,7 @@ export default function HeroFeatures() {
         </p>
         <p className="certificate">Get Certificate</p>
         <div className="content">
-          <p>Add aVlue to the certificates </p>
+          <p>Add Value to the certificates </p>
           <p>and increase your chances of</p>
           <p>getting hired in your dream job.</p>
         </div>
