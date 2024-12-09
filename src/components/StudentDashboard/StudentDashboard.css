@@ -228,13 +228,28 @@ body {
   overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
-.class-item,
 .notice-item {
   display: flex;
   align-items: center;
   gap: 15px;
   margin-bottom: 10px;
   padding: 10px;
+  background-color: var(--background-color);
+  border-radius: 8px;
+  transition: transform var(--transition-speed);
+}
+
+.notice-content h4 {
+  text-align: left;
+  color: #e08e00;
+}
+
+.class-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+  padding: 0.5rem !important;
   background-color: var(--background-color);
   border-radius: 8px;
   transition: transform var(--transition-speed);
@@ -444,7 +459,9 @@ body {
 }
 
 .class-details h4 {
-  margin-bottom: 5px;
+  /* margin-bottom: 2rem; */
+  /* margin-top: 0.5rem; */
+  transform: translateY(-0.5rem);
   color: #333;
 }
 
