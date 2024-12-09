@@ -16,6 +16,7 @@ import {
 } from "react-router-dom";
 import Success from "./components/Login-Signup/success.jsx";
 import StudentDashboard from "./components/StudentDashboard/StudentDashboard.jsx";
+import Blog from "./components/Blog/Blog.jsx";
 
 // Themed Loader Component
 const Loader = () => {
@@ -70,6 +71,7 @@ function App() {
         <Route path="/" element={<LayoutWithLoader />}>
           <Route path="/" element={<Landingpage />} />
           <Route path="/all-courses" element={<Courses />} />
+          <Route path="/about" element={<Blog />} />
           <Route path="/login" element={<Login />} />
           <Route path="/googlesuccess" element={<Success />} />
           <Route path="/signup" element={<Login />} />
