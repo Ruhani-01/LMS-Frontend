@@ -232,7 +232,7 @@ Special Instructions:
             <NavLink className="navlink" to="/">
               Home
             </NavLink>
-            <NavLink className="navlink" to="/blog">
+            <NavLink className="navlink" to="/about">
               Blog
             </NavLink>
             <NavLink className="navlink" to="/all-courses">
@@ -257,9 +257,6 @@ Special Instructions:
               >
                 Dashboard
               </Link>
-              
-              
-              
             ) : (
               <Link className="link login" to="/my-learnings">
                 My Learnings
