@@ -129,7 +129,7 @@ export default function Login() {
 
   const handleNextStep = async() => {
     
-    if (forgotPasswordStep === 1) {
+    if (forgotPasswordStep === 1 && email) {
       const response = await axios.post("http://localhost:3000/api/verifyEmail",{email});
       setBackOtp(response.data);
       setForgotPasswordStep(2);
